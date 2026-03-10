@@ -1,0 +1,144 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div x-data="{
+  typed: '',
+  full: 'Hide secrets in plain sight.',
+  done: false,
+  init() {
+    let i = 0;
+    const iv = setInterval(() => {
+      this.typed += this.full[i++];
+      if (i >= this.full.length) { clearInterval(iv); this.done = true; }
+    }, 48);
+  }
+}">
+
+  <!-- ── HERO ── -->
+  <section style="text-align:center; padding-bottom:64px;">
+    <div class="badge badge-jade afu" style="margin-bottom:28px;">
+      <span class="bdot"></span>Stealth Protocol v2.0 · Active
+    </div>
+
+    <h1 class="afu d1" style="font-weight:900; font-size:clamp(38px,7.5vw,82px); line-height:1.06; letter-spacing:-.035em; margin-bottom:20px; color:var(--text);">
+      <span :class="!done && 'caret'" x-text="typed"></span>
+    </h1>
+
+    <p class="afu d2" style="font-size:clamp(14px,2.2vw,17px); color:var(--text2); max-width:500px; margin:0 auto 40px; line-height:1.75;">
+      Embed secret messages inside ordinary images using Huffman compression + LSB steganography. Zero visual difference, bit-perfect recovery.
+    </p>
+
+    <div class="afu d3" style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:56px;">
+      <a href="{% url 'encode' %}" class="btn btn-jade btn-lg">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Start Encoding
+      </a>
+      <a href="{% url 'decode' %}" class="btn btn-ghost btn-lg">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Decode Image
+      </a>
+    </div>
+
+    <!-- Stats grid — hardcoded, no split filter -->
+    <div class="afu d4" style="display:inline-grid; grid-template-columns:repeat(4,1fr); gap:1px; border-radius:16px; overflow:hidden; border:1px solid var(--border); max-width:640px; margin:0 auto; width:100%;">
+      <div style="background:var(--card-bg); padding:20px 12px; text-align:center;">
+        <div style="font-weight:800; font-size:clamp(16px,3vw,22px); color:var(--jade); letter-spacing:-.02em; margin-bottom:5px;">LSB</div>
+        <div style="font-size:11px; color:var(--text3); font-weight:500; letter-spacing:.04em; text-transform:uppercase;">Encoding</div>
+      </div>
+      <div style="background:var(--card-bg); padding:20px 12px; text-align:center;">
+        <div style="font-weight:800; font-size:clamp(16px,3vw,22px); color:var(--jade); letter-spacing:-.02em; margin-bottom:5px;">0 dB</div>
+        <div style="font-size:11px; color:var(--text3); font-weight:500; letter-spacing:.04em; text-transform:uppercase;">Quality Loss</div>
+      </div>
+      <div style="background:var(--card-bg); padding:20px 12px; text-align:center;">
+        <div style="font-weight:800; font-size:clamp(16px,3vw,22px); color:var(--jade); letter-spacing:-.02em; margin-bottom:5px;">PNG</div>
+        <div style="font-size:11px; color:var(--text3); font-weight:500; letter-spacing:.04em; text-transform:uppercase;">Output Format</div>
+      </div>
+      <div style="background:var(--card-bg); padding:20px 12px; text-align:center;">
+        <div style="font-weight:800; font-size:clamp(16px,3vw,22px); color:var(--jade); letter-spacing:-.02em; margin-bottom:5px;">HUF</div>
+        <div style="font-size:11px; color:var(--text3); font-weight:500; letter-spacing:.04em; text-transform:uppercase;">Compression</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE CARDS ── -->
+  <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-bottom:64px;">
+
+    <a href="{% url 'encode' %}" class="card card-hover afu d1" style="padding:32px; text-decoration:none; display:block;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px;">
+        <div style="width:48px; height:48px; border-radius:14px; background:var(--jade-dim); border:1px solid rgba(16,185,129,.2); display:flex; align-items:center; justify-content:center; color:var(--jade);">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <span class="badge badge-jade" style="font-size:10px;">Encode</span>
+      </div>
+      <h3 style="font-weight:700; font-size:20px; color:var(--text); margin-bottom:10px; letter-spacing:-.02em;">The Encoder</h3>
+      <p style="font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:24px;">
+        Upload a cover image, write your message, and embed it invisibly. Download a PNG identical to the original.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:28px;">
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--jade);flex-shrink:0;"></div>Huffman pre-compression</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--jade);flex-shrink:0;"></div>LSB pixel embedding</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--jade);flex-shrink:0;"></div>Zero perceptual loss</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--jade);flex-shrink:0;"></div>Lossless PNG output</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--jade);">
+        Open Encoder
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" class="arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a href="{% url 'decode' %}" class="card card-hover afu d2" style="padding:32px; text-decoration:none; display:block;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px;">
+        <div style="width:48px; height:48px; border-radius:14px; background:var(--gold-dim); border:1px solid rgba(245,158,11,.2); display:flex; align-items:center; justify-content:center; color:var(--gold);">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <span class="badge badge-gold" style="font-size:10px;">Decode</span>
+      </div>
+      <h3 style="font-weight:700; font-size:20px; color:var(--text); margin-bottom:10px; letter-spacing:-.02em;">The Decoder</h3>
+      <p style="font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:24px;">
+        Upload any StegoHuff-encoded image to extract and reconstruct the hidden message instantly.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:28px;">
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>Automatic Huffman decompression</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>Bit-perfect reconstruction</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>Instant text reveal</div>
+        <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text2);"><div style="width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>Copy to clipboard</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--gold);">
+        Open Decoder
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="card afu d3" style="padding:40px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:32px;">
+      <div style="width:3px; height:22px; background:var(--jade); border-radius:3px;"></div>
+      <h2 style="font-weight:700; font-size:19px; color:var(--text);">How it works</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:32px;">
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="font-weight:900; font-size:36px; color:var(--border2); line-height:1;">01</div>
+        <h4 style="font-weight:600; font-size:15px; color:var(--text);">Upload Cover Image</h4>
+        <p style="font-size:13px; color:var(--text2); line-height:1.75;">Select any PNG or JPG image to serve as the carrier for your hidden payload.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="font-weight:900; font-size:36px; color:var(--border2); line-height:1;">02</div>
+        <h4 style="font-weight:600; font-size:15px; color:var(--text);">Encode & Compress</h4>
+        <p style="font-size:13px; color:var(--text2); line-height:1.75;">Your text is Huffman-compressed then embedded bit-by-bit into the least significant bits of each pixel.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="font-weight:900; font-size:36px; color:var(--border2); line-height:1;">03</div>
+        <h4 style="font-weight:600; font-size:15px; color:var(--text);">Download & Share</h4>
+        <p style="font-size:13px; color:var(--text2); line-height:1.75;">Get back a lossless PNG — visually indistinguishable from the original. Share it freely anywhere.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  .card-hover:hover .arrow { transform: translateX(4px); transition: transform .25s; }
+  .arrow { transition: transform .25s; }
+</style>
+{% endblock %}
