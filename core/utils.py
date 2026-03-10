@@ -78,3 +78,25 @@ def decode_stego(img_path):
     remaining = binary[32+map_len:]
     msg_bin = remaining.split('1111111111111110')[0]
     return huffman_decompress(msg_bin, code_map)
+
+import time
+
+def cleanup_old_files(media_path):
+    now = time.time()
+    # 300 seconds = 5 minutes
+    limit = 300 
+    
+    if not os.path.exists(media_path):
+        return
+
+    for f in os.listdir(media_path):
+        f_path = os.path.join(media_path, f)
+        # Don't delete our .gitkeep file
+        if f == ".gitkeep":
+            continue
+            
+        if os.stat(f_path).st_mtime < (now - limit):
+            try:
+                os.remove(f_path)
+            except OSError:
+                pass
